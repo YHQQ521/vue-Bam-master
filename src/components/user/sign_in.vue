@@ -10,8 +10,8 @@
         </h4>
         <div class='js-sign-in-container'>
             <div class='sign_form'>
-                <el-input style="width:300px;margin-bottom:10px" v-model="user" placeholder="liuheng"></el-input>
-                <el-input style="width:300px;margin-bottom:30px" v-model="password" type="password" placeholder="123456"></el-input>
+                <el-input style="width:300px;margin-bottom:10px" v-model="user" placeholder="请输入用户名"></el-input>
+                <el-input style="width:300px;margin-bottom:30px" v-model="password" type="password" placeholder="请输入密码"></el-input>
                 <el-row>
                     <el-button style="width:100%" type="primary" @click="login">登录</el-button>
                 </el-row>
@@ -34,7 +34,16 @@ import md5 from "md5";
             }
         },
         methods: {
-            async login() {
+            login() {
+                if(this.user.replace(/\s/g, '') == '') {
+                    this.$message('请输入用户名')
+                } else if(this.password.replace(/\s/g, '') == '') {
+                    this.$message('请输入密码')
+                } else {
+                   this.loginRequest() 
+                }
+            },
+            async loginRequest() {
                 let { user, password, photo } = this;
                 let params = { user, password: md5(password + config.scrent)}
                 const result = await login(params);
